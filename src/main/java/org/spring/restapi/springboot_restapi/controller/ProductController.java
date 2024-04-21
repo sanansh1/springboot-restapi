@@ -4,10 +4,7 @@ import org.spring.restapi.springboot_restapi.entity.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,7 +14,7 @@ import java.util.UUID;
 @RestController
 public class ProductController {
     @PostMapping("/product")
-    public ResponseEntity createProduct(@RequestBody Product product){
+    public ResponseEntity createProduct(@RequestBody final Product product){
         String result= UUID.randomUUID().toString();
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(result);
     }
@@ -32,6 +29,21 @@ public class ProductController {
         product.setId(UUID.randomUUID().toString());
         productsList.add(product);
         return productsList;
+    }
+
+    @GetMapping("/product/{id}")
+    public Product getProduct(@PathVariable final String id){
+        return new Product(id, "Single Product",new BigDecimal("100.45"));
+    }
+
+    @PatchMapping
+    public void patchProduct(@RequestBody final Product product){
+        System.out.println(product);
+    }
+
+    @DeleteMapping
+    public void deleteProduct(@RequestBody final Product product){
+        System.out.println(product);
     }
 
 }
